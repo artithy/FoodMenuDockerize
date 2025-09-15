@@ -1,0 +1,53 @@
+services:
+  frontend:
+    build:
+      context: ./PHPFoodMenuReact
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./FoodMenuPhpApi
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./FoodMenuPhpApi:/app
+    environment:
+      DB_HOST: db
+      DB_USER: user
+      DB_PASSWORD: userpassword
+      DB_NAME: foodmenu
+    depends_on:
+      - db
+    command: sh -c "sleep 10 && php /app/public/setup_tables.php && php -S 0.0.0.0:8000 -t /app/public"
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: foodmenu
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpassword
+    ports:
+      - "3309:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8082:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: user
+      PMA_PASSWORD: userpassword
+    depends_on:
+      - db
+
+volumes:
+  db_data:
