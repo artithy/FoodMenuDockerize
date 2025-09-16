@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import getAxios from "../utils/axios";
 
 export default function OrderPage() {
     const location = useLocation();
@@ -50,7 +51,7 @@ export default function OrderPage() {
         };
 
         try {
-            const res = await axios.post("http://localhost:8000/place_order.php", payload);
+            const res = await getAxios().post("/place_order.php", payload);
             console.log(res.data);
             if (res.data.status) {
                 window.location.href = res.data.payment_url;
@@ -81,7 +82,7 @@ export default function OrderPage() {
             <div>
                 {cartItems.map(item => (
                     <div key={item.food_id} className="flex items-center bg-white rounded-lg shadow-sm overflow-hidden mb-2">
-                        <img src={`http://localhost:8000/${item.image}`} className="w-20 h-20 object-cover" />
+                        <img src={`${import.meta.env.VITE_API_URL}/${item.image}`} className="w-20 h-20 object-cover" />
                         <div className="flex-1 p-3">
                             <h3 className="text-md font-semibold text-gray-900">{item.name}</h3>
                             <p>Qty: {counts[item.food_id]}</p>

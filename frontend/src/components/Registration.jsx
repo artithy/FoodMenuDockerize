@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import getAxios from "../utils/axios";
 
 export default function SignupForm() {
     const [userName, setUserName] = useState("");
@@ -34,7 +35,7 @@ export default function SignupForm() {
 
         try {
             // Registration.jsx
-            const response = await axios.post("http://localhost:8000/signup.php", {
+            const response = await getAxios().post("/signup.php", {
                 user_name: userName,
                 email,
                 password,

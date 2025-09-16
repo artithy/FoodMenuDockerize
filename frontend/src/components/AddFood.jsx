@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import getAxios from "../utils/axios";
 
 export default function AddFood() {
     const [name, setName] = useState("");
@@ -20,7 +21,7 @@ export default function AddFood() {
         const fetchCuisines = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await axios.get("http://localhost:8000/get_cuisine.php", {
+                const response = await getAxios().get("/get_cuisine.php", {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setCuisines(response.data.data);

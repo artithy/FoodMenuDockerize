@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cart from "./Cart";
 import Drawer from "./Drawer";
+import getAxios from "../utils/axios";
 
 export default function FoodMenu() {
     const [foods, setFoods] = useState([]);
@@ -14,7 +15,7 @@ export default function FoodMenu() {
     useEffect(() => {
         const fetchFoods = async () => {
             try {
-                const res = await axios.get("http://localhost:8000/get_food.php");
+                const res = await getAxios().get("/get_food.php");
                 if (res.data.status) setFoods(res.data.data || []);
             } catch (err) {
                 console.error("Error fetching foods:", err);
@@ -31,7 +32,7 @@ export default function FoodMenu() {
                 if (savedToken) {
                     setCartToken(savedToken);
                 } else {
-                    const res = await axios.post("http://localhost:8000/create_guest_cart.php", {});
+                    const res = await getAxios().post("/create_guest_cart.php", {});
                     if (res.data.status) {
                         setCartToken(res.data.cart_token);
                         localStorage.setItem("cartToken", res.data.cart_token);
@@ -50,7 +51,7 @@ export default function FoodMenu() {
         if (!cartToken) return;
         const fetchCart = async () => {
             try {
-                const res = await axios.get(`http://localhost:8000/get_cart_item_with_food.php?cart_token=${cartToken}`);
+                const res = await getAxios().get(`/get_cart_item_with_food.php?cart_token=${cartToken}`);
                 if (res.data.status) {
                     setCartItems(res.data.item);
                     const countsMap = {};
@@ -78,7 +79,7 @@ export default function FoodMenu() {
 
     const updateCartItems = async () => {
         try {
-            const res = await axios.get(`http://localhost:8000/get_cart_item_with_food.php?cart_token=${cartToken}`);
+            const res = await getAxios().get(`/get_cart_item_with_food.php?cart_token=${cartToken}`);
             if (res.data.status) {
                 const uniqueItems = [];
                 const seenFoodIds = [];
@@ -108,7 +109,7 @@ export default function FoodMenu() {
             setIsDrawerOpen(true);
 
             const newQty = (counts[foodId] || 0) + 1;
-            await axios.post(`http://localhost:8000/add_to_cart.php?cart_token=${cartToken}`, { cart_token: cartToken, food_id: foodId, quantity: newQty });
+            await getAxios().post(`/add_to_cart.php?cart_token=${cartToken}`, { cart_token: cartToken, food_id: foodId, quantity: newQty });
 
             setCounts(prev => ({ ...prev, [foodId]: newQty }));
             await updateCartItems();
@@ -125,14 +126,14 @@ export default function FoodMenu() {
             const newQty = currentQty - 1;
 
             if (newQty > 0) {
-                await axios.post(
+                await getAxios().post(
                     "http://localhost:8000/add_to_cart.php",
                     { cart_token: cartToken, food_id: foodId, quantity: newQty },
                     { headers: { "Content-Type": "application/json" } }
                 );
             } else {
                 // Delete item
-                await axios.post(
+                await getAxios().post(
                     "http://localhost:8000/delete_cart.php",
                     { cart_token: cartToken, food_id: foodId },
                     { headers: { "Content-Type": "application/json" } }
@@ -217,7 +218,7 @@ export default function FoodMenu() {
                     {filteredFoods.map(food => (
                         <div key={food.id} className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition duration-300 cursor-pointer overflow-hidden">
                             <div className="relative">
-                                <img src={`http://localhost:8000/${food.image}`} alt={food.name} className="w-full h-48 object-cover rounded-t-2xl" />
+                                <img src={`${import.meta.env.VITE_API_URL}/${food.image}`} alt={food.name} className="w-full h-48 object-cover rounded-t-2xl" />
                                 <span className="absolute top-2 right-2 bg-blue-700 text-white text-xs font-bold px-2 py-1 rounded-lg shadow">
                                     VAT: {parseInt(food.vat_price)}%
                                 </span>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import getAxios from "../utils/axios";
 
 export default function Cuisine() {
     const [name, setName] = useState("");
@@ -11,7 +12,7 @@ export default function Cuisine() {
 
     const fetchAllCuisines = async () => {
         try {
-            const res = await axios.get("http://localhost:8000/get_cuisine.php");
+            const res = await getAxios().get("/get_cuisine.php");
             if (res.data.status) {
                 setCuisines(res.data.data);
             } else {

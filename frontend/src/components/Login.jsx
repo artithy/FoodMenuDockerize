@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import getAxios from "../utils/axios";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -28,7 +29,7 @@ export default function Login() {
         }
 
         try {
-            const response = await axios.post("http://localhost:8000/login.php", {
+            const response = await getAxios().post("/login.php", {
                 email,
                 password,
             });

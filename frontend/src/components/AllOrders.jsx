@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import getAxios from "../utils/axios";
 
 export default function AllOrders() {
     const [orders, setOrders] = useState([]);
@@ -8,8 +9,7 @@ export default function AllOrders() {
     const fetchOrders = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await axios.get(
-                "http://localhost:8000/getAllOrdersWithItems.php",
+            const response = await getAxios().get("/getAllOrdersWithItems.php",
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }

@@ -6,6 +6,7 @@ import FoodList from "./FoodList";
 import AllOrders from "./AllOrders";
 import DashboardHome from "./DashboardHome";
 import axios from "axios";
+import getAxios from "../utils/axios";
 
 
 export default function Dashboard() {
@@ -22,7 +23,7 @@ export default function Dashboard() {
             }
 
             try {
-                const res = await axios.get("http://localhost:8000/dashboard.php", {
+                const res = await getAxios().get("/dashboard.php", {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -42,8 +43,8 @@ export default function Dashboard() {
         const token = localStorage.getItem("token");
 
         try {
-            await axios.post(
-                "http://localhost:8000/logout.php",
+            await getAxios().post(
+                "/logout.php",
                 {},
                 { headers: { Authorization: `Bearer ${token}` } }
             );

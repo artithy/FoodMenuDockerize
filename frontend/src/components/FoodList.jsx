@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import getAxios from '../utils/axios';
 
 export default function FoodList() {
     const [foods, setFoods] = useState([]);
 
     const fetchFoods = async () => {
         try {
-            const res = await axios.get("http://localhost:8000/get_food.php");
+            const res = await getAxios().get("/get_food.php");
             if (res.data.status) {
                 setFoods(res.data.data || []);
             } else {
@@ -29,8 +30,8 @@ export default function FoodList() {
         if (!window.confirm("Are you sure you want to delete this food?")) return;
 
         try {
-            const res = await axios.post(
-                "http://localhost:8000/delete_food.php",
+            const res = await getAxios().post(
+                "/delete_food.php",
                 { id },
                 { headers: { "Content-Type": "application/json" } }
             );
@@ -74,7 +75,7 @@ export default function FoodList() {
                                 <td className="px-4 py-2">
                                     {food.image ? (
                                         <img
-                                            src={`http://localhost:8000/${food.image}`}
+                                            src={`${import.meta.env.VITE_API_URL}/${food.image}`}
                                             alt={food.name}
                                             className="w-12 h-12 object-cover rounded"
                                         />

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DashboardBox from "./DashboardBox";
 import { Chart } from "primereact/chart";
+import getAxios from "../utils/axios";
 
 
 export default function DashboardHome() {
@@ -12,7 +13,7 @@ export default function DashboardHome() {
     const fetchDashboardData = async () => {
         try {
             const token = localStorage.getItem("token");
-            const summaryRes = await axios.get("http://localhost:8000/dashboard-summary.php", {
+            const summaryRes = await getAxios().get("/dashboard-summary.php", {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setSummary({
@@ -24,10 +25,10 @@ export default function DashboardHome() {
 
             });
 
-            const daysRes = await axios.get("http://localhost:8000/orders_by_days.php");
+            const daysRes = await getAxios().get("/orders_by_days.php");
             setOrdersByDays(daysRes.data);
 
-            const hoursRes = await axios.get("http://localhost:8000/orders_by_hours.php");
+            const hoursRes = await getAxios().get("/orders_by_hours.php");
             setOrdersByHours(hoursRes.data);
         } catch (error) {
             console.error("Error fetching dashboard summary:", error);

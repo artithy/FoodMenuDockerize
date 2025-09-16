@@ -30,7 +30,7 @@ export default function Cart({
                         className="flex justify-between items-center border-b border-gray-200 pb-2"
                     >
                         <img
-                            src={`http://localhost:8000/${item.image}`}
+                            src={`${import.meta.env.VITE_API_URL}/${item.image}`}
                             className="w-16 h-16 rounded-lg object-cover mr-2"
                         />
                         <div className="flex-1">

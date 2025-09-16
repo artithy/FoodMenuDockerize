@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import axios from "axios";
+import getAxios from "../utils/axios";
 
 
 export default function SuccessPage() {
@@ -15,8 +16,8 @@ export default function SuccessPage() {
     useEffect(() => {
         const fetchPaymentStatus = async () => {
             try {
-                const res = await axios.get(
-                    `http://localhost:8000/success.php?order_id=${orderId}&invoice=${invoiceId}`
+                const res = await getAxios().get(
+                    `/success.php?order_id=${orderId}&invoice=${invoiceId}`
                 );
                 setResult(res.data);
             } catch (err) {
