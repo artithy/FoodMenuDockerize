@@ -28,8 +28,6 @@ if (
     ]);
     exit();
 }
-$appKey    = "";
-$secretKey = "";
 
 
 $cart = new Cart();

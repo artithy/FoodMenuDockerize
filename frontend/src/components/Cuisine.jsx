@@ -45,8 +45,7 @@ export default function Cuisine() {
         }
 
         try {
-            const res = await axios.post(
-                "http://localhost:8000/create_cuisine.php",
+            const res = await getAxios().post("/create_cuisine.php",
                 { name },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -68,8 +67,8 @@ export default function Cuisine() {
         if (!name || !id) return;
 
         try {
-            const res = await axios.post(
-                "http://localhost:8000/update_cuisine.php",
+            const res = await getAxios().post(
+                "/update_cuisine.php",
                 { id, name },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -84,8 +83,8 @@ export default function Cuisine() {
 
     const handleDeleteCuisine = async (id) => {
         try {
-            const res = await axios.post(
-                "http://localhost:8000/delete_cuisine.php",
+            const res = await getAxios().post(
+                "/delete_cuisine.php",
                 { id: id },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
